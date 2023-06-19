@@ -1,6 +1,8 @@
 package com.nilfie.pdf_demo.controller;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 import com.nilfie.pdf_demo.entity.PDF;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,29 +29,37 @@ public class PdfController {
     @Value("${templatePath}")
     private String templatePath;
 
+    @Value("${photo}")
+    private String photo;
+
     // 生成文件路径
-    String filename = "testpdf.pdf";
+    String filename = "test.pdf";
 
     @RequestMapping("/create")
     @ResponseBody
     public String createPDF(HttpServletResponse response) {
         PDF pdf = new PDF();
-        pdf.setName("nilfie");
-        pdf.setAge(21);
-        pdf.setSchool("宜宾学院");
-        pdf.setDepartment("人工智能与大数据学部");
+        pdf.setName("xs");
+        pdf.setNumber("439868934269");
+        pdf.setGender("男");
+        pdf.setXh("2001041");
+        pdf.setDate("2023-6-17");
+        pdf.setZjnumber("543675899020030456");
+
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", pdf.getName());
-        map.put("age", pdf.getAge());
-        map.put("school", pdf.getSchool());
-        map.put("department", pdf.getDepartment());
+        map.put("number", pdf.getNumber());
+        map.put("gender", pdf.getGender());
+        map.put("zjnumber", pdf.getZjnumber());
+        map.put("xh", pdf.getXh());
+        map.put("date", pdf.getDate());
+
 
         PdfReader reader;
         OutputStream os = null;
         ByteArrayOutputStream baos = null;
         PdfStamper stamper;
-
 
         try {
             os = response.getOutputStream();
@@ -60,6 +70,24 @@ public class PdfController {
             stamper = new PdfStamper(reader, baos);
             // 获取pdf表单
             AcroFields formTexts = stamper.getAcroFields();
+
+
+            // 插入图片
+            AcroFields.FieldPosition position = formTexts.getFieldPositions("photo").get(0);
+            int pageNo = position.page;
+            Rectangle signRect = position.position;
+            float x = signRect.getLeft();
+            float y = signRect.getBottom();
+            // 读图片
+            Image image = Image.getInstance(photo);
+            // 获取操作的页面
+            PdfContentByte under = stamper.getOverContent(pageNo);
+            // 根据域的大小缩放图片
+            image.scaleToFit(signRect.getWidth(), signRect.getHeight());
+            // 添加图片
+            image.setAbsolutePosition(x, y);
+            under.addImage(image);
+
 
             // 设置字体(这里设置为系统字体，你也可以引入其他的字体)，不设置很可能，中文无法显示。
             BaseFont bf = BaseFont.createFont("C:/WINDOWS/Fonts/SIMSUN.ttc,1",

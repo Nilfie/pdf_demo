@@ -2,6 +2,8 @@ package com.nilfie.pdf_demo.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author Nilfie
  * @version 1.0
@@ -10,8 +12,11 @@ import lombok.Data;
  **/
 @Data
 public class PDF {
-    private String school;
     private String name;
-    private int age;
-    private String department;
+    private String number;
+    private String gender;
+    private String zjnumber;
+    private String xh;
+    private String date;
+    private byte[] photo;
 }
