@@ -1,0 +1,3 @@
+# pdf_demo
+使用itextpdf实现pdf读取打印
+配置文件中的图片和PDF模板需要自己添加
