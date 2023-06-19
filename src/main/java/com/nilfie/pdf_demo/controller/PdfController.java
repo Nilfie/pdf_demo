@@ -114,8 +114,9 @@ public class PdfController {
             // 强制下载
 //            response.reset();
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment;fileName="
-                    + URLEncoder.encode(filename, "UTF-8"));
+            response.setHeader("Content-Disposition",
+                    "attachment;fileName="
+                            + URLEncoder.encode(filename, "UTF-8"));
 
         } catch (Exception e) {
             e.printStackTrace();

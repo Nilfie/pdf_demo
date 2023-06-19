@@ -18,5 +18,4 @@ public class PDF {
     private String zjnumber;
     private String xh;
     private String date;
-    private byte[] photo;
 }
